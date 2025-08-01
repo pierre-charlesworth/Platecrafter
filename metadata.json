@@ -1,0 +1,6 @@
+{
+  "name": "PlateCrafter",
+  "description": "A responsive Progressive Web App to help scientists design, visualize, and export experiments conducted in 96-well plates. It features an interactive plate designer, AI-powered layout generation, and multiple visualization modes.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
