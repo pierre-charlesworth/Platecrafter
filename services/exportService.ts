@@ -89,12 +89,13 @@ const detectCheckerboardConfig = (plateData: Well[]): CheckerboardConfig | null 
 
 const generateSvgString = (plateData: Well[], plateFormat: PlateFormat, colorMap: Map<string, string>, concentrationUnit: ConcentrationUnit, checkerboardConfig: CheckerboardConfig | null): { svg: string, width: number, height: number } => {
     const PADDING = 40;
-    const TITLE_HEIGHT = 60;
+    const TITLE_HEIGHT = 80; // Increased height to accommodate strain info
     const WELL_RADIUS = 20; // Increased radius for text
     const WELL_DIAMETER = WELL_RADIUS * 2;
     const WELL_SPACING = 10;
     const FONT_SIZE_LABEL = 14;
     const FONT_SIZE_TITLE = 24;
+    const FONT_SIZE_SUBTITLE = 16;
     const FONT_SIZE_LEGEND = 14;
     const FONT_SIZE_WELL = 9; // Font size for text inside wells
     
@@ -178,8 +179,22 @@ const generateSvgString = (plateData: Well[], plateFormat: PlateFormat, colorMap
         </defs>`;
     }
 
+    // Extract strain information
+    const strains = new Set<string>();
+    plateData.forEach(well => {
+        if (well.strain && well.strain.trim()) {
+            strains.add(well.strain.trim());
+        }
+    });
+    const strainInfo = Array.from(strains).join(', ');
+
     // Title
     svg += `<text x="${PADDING}" y="${PADDING + 10}" font-size="${FONT_SIZE_TITLE}px" font-weight="bold" fill="black">96-well Plate Layout</text>`;
+    
+    // Strain subtitle
+    if (strainInfo) {
+        svg += `<text x="${PADDING}" y="${PADDING + 35}" font-size="${FONT_SIZE_SUBTITLE}px" fill="black">Strain: ${strainInfo}</text>`;
+    }
 
     // Column Headers
     for (let i = 0; i < plateFormat.cols; i++) {
